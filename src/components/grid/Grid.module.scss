@@ -1,0 +1,15 @@
+.grid {
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  grid-area: 2 / 2 / 3 / 3;
+  align-self: stretch;
+  border: 1px dashed var(--grid-lines-color);
+  border-right: none;
+  border-bottom: none;
+  height: 70vh;
+  width: 94%;
+  margin-left: auto;
+  margin-right: auto;
+}

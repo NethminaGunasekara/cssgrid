@@ -1,0 +1,48 @@
+.item {
+  &:not(:first-child) {
+    margin-top: 0.8rem;
+  }
+
+  &.active {
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2rem;
+    width: 2.2rem;
+    transition: background-color 0.2s ease-out;
+
+    svg {
+      height: 1.2rem;
+
+      path {
+        fill: #e8eaed;
+        transition: fill 0.2s ease-out;
+      }
+    }
+  }
+
+  // Change the icon's fill on hover
+  &:not(.active) {
+    &:hover svg path {
+      fill: #fff;
+    }
+  }
+}
+
+.active {
+  position: relative;
+
+  a {
+    background-color: var(--active-item-bg-color);
+    border-radius: 3px;
+
+    svg path {
+      fill: #fff;
+    }
+  }
+}

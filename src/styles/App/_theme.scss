@@ -1,0 +1,49 @@
+:root {
+  --bg-color: #fff;
+  --sidebar-bg-color: #4e31aa;
+  --site-title-color: #525252;
+  --theme-switch-bg-color: #6749c5;
+  --active-item-bg-color: #ffffff44;
+  --grid-lines-color: #747474;
+  --grid-area-bg-color: #0088ff27;
+  --grid-area-fg-color: #008aff;
+
+  .theme-switch {
+    .light-mode {
+      opacity: 0;
+    }
+
+    .dark-mode {
+      opacity: 1;
+      height: 1rem;
+    }
+
+    svg {
+      transform: translate(-50%, -50%) rotate(0deg);
+      transition: transform 1.2s ease-out, opacity 0.6s ease-out;
+    }
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg-color: #282828;
+  --sidebar-bg-color: #212121;
+  --site-title-color: #fff;
+  --theme-switch-bg-color: #333333;
+  --active-item-bg-color: #4f4f4f;
+
+  .theme-switch {
+    .light-mode {
+      opacity: 1;
+    }
+
+    .dark-mode {
+      opacity: 0;
+    }
+
+    svg {
+      transform: translate(-50%, -50%) rotate(1800deg);
+      transition: transform 1.2s ease-out, opacity 0.6s ease-out;
+    }
+  }
+}
