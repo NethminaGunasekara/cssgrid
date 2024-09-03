@@ -23,8 +23,8 @@ export default function Grid() {
     const gridCells = [];
     let cellId = 1;
 
-    for (let i = 1; i < columns + 1; i++) {
-      for (let j = 1; j < rows + 1; j++) {
+    for (let i = 1; i <= columns; i++) {
+      for (let j = 1; j <= rows; j++) {
         gridCells.push(<Cell key={cellId} id={cellId} row={i} col={j} />);
         cellId++;
       }
@@ -58,16 +58,6 @@ export default function Grid() {
     if (grid.current) {
       grid.current.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
       grid.current.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-    }
-
-    const area = document.getElementById("area-1");
-
-    if (area) {
-      const rect = area.getBoundingClientRect();
-      const x = rect.left + window.scrollX;
-      const y = rect.top + window.scrollY;
-
-      console.log(y);
     }
   });
 

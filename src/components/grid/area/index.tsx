@@ -1,6 +1,9 @@
 import { useRef, useState, useEffect } from "react";
 import styles from "./Area.module.scss";
 import * as Icons from "./Icons";
+import { useDispatch, useSelector } from "react-redux";
+import { setAreaPosition } from "../../../services/state/grid/gridSlice";
+import { RootState } from "../../../services/state/store";
 
 interface AreaProps {
   id: number;
@@ -11,22 +14,64 @@ interface AreaProps {
   colEnd: number;
 }
 
+// Element position (x, y)
+interface Position {
+  x: number;
+  y: number;
+}
+
+const initialPosition: Position = {
+  x: 0,
+  y: 0,
+};
+
 export default function Area(props: AreaProps) {
   const area = useRef<HTMLDivElement>(null);
   const moveButton = useRef<HTMLButtonElement>(null);
+  const gridState = useSelector((state: RootState) => state.grid);
+  const dispatch = useDispatch();
 
   interface DraggableState {
     canDrag: boolean;
-    cursorPosition: { x: number; y: number };
-    areaPosition: { x: number; y: number };
+    cursorPosition: Position;
+    areaPosition: Position;
   }
 
   // Set initial state
   const [state, setState] = useState<DraggableState>({
     canDrag: false,
-    cursorPosition: { x: 0, y: 0 },
-    areaPosition: { x: 0, y: 0 },
+    cursorPosition: initialPosition,
+    areaPosition: initialPosition,
   });
+
+  // Update area position in state
+  const updateAreaPosition = (reset?: boolean) => {
+    if (area.current) {
+      const areaRect = area.current.getBoundingClientRect();
+
+      if (reset) {
+        dispatch(
+          setAreaPosition({
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          })
+        );
+
+        return;
+      }
+
+      dispatch(
+        setAreaPosition({
+          top: areaRect.top,
+          right: areaRect.right,
+          bottom: areaRect.bottom,
+          left: areaRect.left,
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     const gridArea = area.current as HTMLDivElement;
@@ -42,23 +87,25 @@ export default function Area(props: AreaProps) {
         setState({
           canDrag: true,
           cursorPosition: { x: event.clientX, y: event.clientY },
-          areaPosition: { x: 0, y: 0 },
+          areaPosition: initialPosition,
         });
       }
     };
 
-    const onMouseUp = () =>
+    const onMouseUp = () => {
       setState({
         canDrag: false,
-        cursorPosition: { x: 0, y: 0 },
-        areaPosition: { x: 0, y: 0 },
+        cursorPosition: initialPosition,
+        areaPosition: initialPosition,
       });
+
+      // Reset the area position
+      updateAreaPosition(true);
+    };
 
     // Reposition self on mouse move
     const onMouseMove = (event: MouseEvent) => {
       if (state.canDrag) {
-        console.log(state.cursorPosition.x, state.cursorPosition.y);
-
         setState({
           ...state,
           areaPosition: {
@@ -66,6 +113,9 @@ export default function Area(props: AreaProps) {
             y: state.areaPosition.y + event.movementY,
           },
         });
+
+        // Update area position in state
+        updateAreaPosition();
       }
     };
 
